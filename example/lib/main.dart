@@ -68,8 +68,7 @@ class _MailPageState extends State<MailPage> {
     super.initState();
     //Start showcase view after current widget frames are drawn.
     WidgetsBinding.instance!.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context)!
-          .startShowCase([_one, _two, _three, _four, _five, _six]),
+      (_) => ShowCaseWidget.of(context)!.startShowCase([_one, _two, _three, _four, _five, _six]),
     );
     mails = [
       Mail(
@@ -219,6 +218,7 @@ class _MailPageState extends State<MailPage> {
                       showSkipButton: true,
                       nextButtonText: 'Next',
                       skipButtonText: 'Skip',
+                      showPreviousButton: true,
                       overlayPadding: const EdgeInsets.all(5),
                       key: _two,
                       title: 'Profile',
@@ -280,6 +280,7 @@ class _MailPageState extends State<MailPage> {
       ),
       floatingActionButton: Showcase(
         key: _five,
+        showPreviousButton: true,
         title: 'Compose Mail',
         description: 'Click here to compose mail',
         shapeBorder: const CircleBorder(),
@@ -291,8 +292,7 @@ class _MailPageState extends State<MailPage> {
                * currently rendered so the showcased keys are available in the
                * render tree. */
               scrollController.jumpTo(0);
-              ShowCaseWidget.of(context)!
-                  .startShowCase([_one, _two, _three, _four, _five, _six]);
+              ShowCaseWidget.of(context)!.startShowCase([_one, _two, _three, _four, _five, _six]);
             });
           },
           child: const Icon(
@@ -303,8 +303,7 @@ class _MailPageState extends State<MailPage> {
     );
   }
 
-  GestureDetector showcaseMailTile(GlobalKey<State<StatefulWidget>> key,
-      bool showCaseDetail, BuildContext context) {
+  GestureDetector showcaseMailTile(GlobalKey<State<StatefulWidget>> key, bool showCaseDetail, BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push<void>(
@@ -322,6 +321,7 @@ class _MailPageState extends State<MailPage> {
           nextButtonText: 'Next >',
           skipButtonText: 'Skip',
           key: key,
+          showPreviousButton: true,
           description: 'Tap to check mail',
           disposeOnTap: true,
           onTargetClick: () {
@@ -337,8 +337,7 @@ class _MailPageState extends State<MailPage> {
             });
           },
           child: Container(
-            padding:
-                const EdgeInsets.only(left: 6, right: 16, top: 5, bottom: 5),
+            padding: const EdgeInsets.only(left: 6, right: 16, top: 5, bottom: 5),
             color: const Color(0xffFFF6F7),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -545,9 +544,7 @@ class MailTile extends StatelessWidget {
                         mail.sender,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontWeight: mail.isUnread
-                              ? FontWeight.bold
-                              : FontWeight.normal,
+                          fontWeight: mail.isUnread ? FontWeight.bold : FontWeight.normal,
                           fontSize: 17,
                         ),
                       ),
@@ -564,9 +561,7 @@ class MailTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
-                          color: mail.isUnread
-                              ? Theme.of(context).primaryColor
-                              : Colors.black,
+                          color: mail.isUnread ? Theme.of(context).primaryColor : Colors.black,
                           fontSize: 15,
                         ),
                       ),

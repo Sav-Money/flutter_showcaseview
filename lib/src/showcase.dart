@@ -65,6 +65,18 @@ class Showcase extends StatefulWidget {
   final bool showSkipButton;
   final FutureOr<void> Function()? onNextItemCalled;
 
+  final bool? showPreviousButton;
+  final String? previousButtonText;
+  final VoidCallback? onPreviousButtonTap;
+
+  final TextStyle? skipButtonTextStyle;
+  final TextStyle? nextButtonTextStyle;
+  final TextStyle? previousButtonTextStyle;
+
+  final Widget? skipButton;
+  final Widget? previousButton;
+  final Widget? nextButton;
+
   /// Defines blur value.
   /// This will blur the background while displaying showcase.
   ///
@@ -101,6 +113,15 @@ class Showcase extends StatefulWidget {
     this.onNextItemCalled,
     this.blurValue,
     this.radius,
+    this.previousButtonText,
+    this.onPreviousButtonTap,
+    this.showPreviousButton,
+    this.skipButtonTextStyle,
+    this.nextButtonTextStyle,
+    this.previousButtonTextStyle,
+    this.nextButton,
+    this.previousButton,
+    this.skipButton,
   })  : height = null,
         width = null,
         container = null,
@@ -139,6 +160,15 @@ class Showcase extends StatefulWidget {
     this.showSkipButton = false,
     this.onNextItemCalled,
     this.blurValue,
+    this.previousButtonText,
+    this.onPreviousButtonTap,
+    this.showPreviousButton,
+    this.nextButtonTextStyle,
+    this.previousButtonTextStyle,
+    this.skipButtonTextStyle,
+    this.nextButton,
+    this.previousButton,
+    this.skipButton,
   })  : showArrow = false,
         onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
@@ -213,6 +243,17 @@ class _ShowcaseState extends State<Showcase> {
       showOverlay: true,
       child: widget.child,
     );
+  }
+
+  void onClickPrevious() {
+    final total = ShowCaseWidget.of(context)!.ids?.length;
+    final currentId = ShowCaseWidget.of(context)!.activeWidgetId;
+
+    if (total != null && currentId != null) {
+      if (currentId > 0) {
+        ShowCaseWidget.of(context)!.previous();
+      }
+    }
   }
 
   void nextIfAny() async {
@@ -320,7 +361,16 @@ class _ShowcaseState extends State<Showcase> {
                 nextButtonText: widget.nextButtonText,
                 skipButtonText: widget.skipButtonText,
                 onNextButtonTap: nextIfAny,
+                onPreviousButtonTap: onClickPrevious,
                 onSkipButtonTap: () => ShowCaseWidget.of(context)!.dismiss(),
+                previousButton: widget.previousButton,
+                skipButton: widget.skipButton,
+                nextButton: widget.nextButton,
+                previousButtonText: widget.previousButtonText,
+                showPreviousButton: widget.showPreviousButton,
+                nextButtonTextStyle: widget.nextButtonTextStyle,
+                previousButtonTextStyle: widget.previousButtonTextStyle,
+                skipButtonTextStyle: widget.skipButtonTextStyle,
               ),
             ],
           )

@@ -43,14 +43,27 @@ class ToolTipWidget extends StatefulWidget {
   final double? contentWidth;
   final VoidCallback? onTooltipTap;
   final EdgeInsets? contentPadding;
+  final bool? showPreviousButton;
   final bool? showNextButton;
   final bool? showSkipButton;
   final String? nextButtonText;
   final String? skipButtonText;
+  final String? previousButtonText;
   final VoidCallback? onNextButtonTap;
   final VoidCallback? onSkipButtonTap;
+  final VoidCallback? onPreviousButtonTap;
   final Duration animationDuration;
   final bool disableAnimation;
+
+  final Widget? skipButton;
+  final Widget? previousButton;
+  final Widget? nextButton;
+
+  final TextStyle? skipButtonTextStyle;
+  final TextStyle? nextButtonTextStyle;
+  final TextStyle? previousButtonTextStyle;
+
+  final Widget? actions;
 
   ToolTipWidget({
     this.showNextButton,
@@ -59,6 +72,9 @@ class ToolTipWidget extends StatefulWidget {
     this.skipButtonText,
     this.onNextButtonTap,
     this.onSkipButtonTap,
+    this.onPreviousButtonTap,
+    this.showPreviousButton,
+    this.previousButtonText,
     required this.position,
     required this.offset,
     required this.screenSize,
@@ -76,6 +92,13 @@ class ToolTipWidget extends StatefulWidget {
     required this.animationDuration,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     required this.disableAnimation,
+    this.actions,
+    this.nextButton,
+    this.previousButton,
+    this.skipButton,
+    this.previousButtonTextStyle,
+    this.nextButtonTextStyle,
+    this.skipButtonTextStyle,
   });
 
   @override
@@ -401,30 +424,56 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
   Widget _buildBottomButtons(BuildContext context) {
     return Row(
       children: [
-        if (widget.showSkipButton ?? false)
+        if (widget.showSkipButton ?? false) ...[
           InkWell(
             onTap: widget.onSkipButtonTap,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                widget.skipButtonText ?? "Skip",
-                style: widget.descTextStyle ??
-                    Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
-              ),
-            ),
+            child: widget.skipButton ??
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    widget.skipButtonText ?? "Skip",
+                    style: widget.skipButtonTextStyle ??
+                        Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
+                  ),
+                ),
           ),
-        const Spacer(),
+          // const Spacer(),
+        ],
+        if (widget.showPreviousButton ?? false) ...[
+          InkWell(
+            onTap: widget.onPreviousButtonTap,
+            child: widget.previousButton ??
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    widget.previousButtonText ?? "Prev",
+                    style: widget.previousButtonTextStyle ??
+                        Theme.of(context).textTheme.subtitle2!.merge(
+                              TextStyle(
+                                color: widget.textColor,
+                              ),
+                            ),
+                  ),
+                ),
+          ),
+          // const Spacer(),
+        ],
         if (widget.showNextButton ?? false)
           InkWell(
             onTap: widget.onNextButtonTap,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(
-                widget.nextButtonText ?? "Next",
-                style: widget.descTextStyle ??
-                    Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
-              ),
-            ),
+            child: widget.nextButton ??
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    widget.nextButtonText ?? "Next",
+                    style: widget.nextButtonTextStyle ??
+                        Theme.of(context).textTheme.subtitle2!.merge(
+                              TextStyle(
+                                color: widget.textColor,
+                              ),
+                            ),
+                  ),
+                ),
           ),
       ],
     );
