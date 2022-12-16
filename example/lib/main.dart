@@ -219,6 +219,7 @@ class _MailPageState extends State<MailPage> {
                       nextButtonText: 'Next',
                       skipButtonText: 'Skip',
                       showPreviousButton: true,
+                      contentPadding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
                       overlayPadding: const EdgeInsets.all(5),
                       key: _two,
                       title: 'Profile',

@@ -45,6 +45,9 @@ class ToolTipWidget extends StatefulWidget {
   final double? contentWidth;
   final VoidCallback? onTooltipTap;
   final EdgeInsets? contentPadding;
+  final EdgeInsets? titlePadding;
+  final EdgeInsets? descriptionPadding;
+
   final bool? showPreviousButton;
   final bool? showNextButton;
   final bool? showSkipButton;
@@ -103,6 +106,8 @@ class ToolTipWidget extends StatefulWidget {
     this.skipButtonTextStyle,
     this.titleAlignment = CrossAxisAlignment.start,
     this.titleSpace = 10,
+    this.descriptionPadding,
+    this.titlePadding,
   });
 
   @override
@@ -335,24 +340,30 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                       : CrossAxisAlignment.center,
                                   children: <Widget>[
                                     if (widget.title != null) ...[
-                                      Text(
-                                        widget.title!,
-                                        style: widget.titleTextStyle ??
-                                            Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .merge(TextStyle(color: widget.textColor)),
+                                      Padding(
+                                        padding: widget.titlePadding ?? EdgeInsets.zero,
+                                        child: Text(
+                                          widget.title!,
+                                          style: widget.titleTextStyle ??
+                                              Theme.of(context)
+                                                  .textTheme
+                                                  .headline6!
+                                                  .merge(TextStyle(color: widget.textColor)),
+                                        ),
                                       ),
                                       SizedBox(height: widget.titleSpace ?? 0),
                                     ],
                                     if (widget.description != null)
-                                      Text(
-                                        widget.description!,
-                                        style: widget.descTextStyle ??
-                                            Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .merge(TextStyle(color: widget.textColor)),
+                                      Padding(
+                                        padding: widget.descriptionPadding ?? EdgeInsets.zero,
+                                        child: Text(
+                                          widget.description!,
+                                          style: widget.descTextStyle ??
+                                              Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2!
+                                                  .merge(TextStyle(color: widget.textColor)),
+                                        ),
                                       ),
                                     if ((widget.showNextButton ?? false) || (widget.showSkipButton ?? false)) ...[
                                       const SizedBox(height: 8.0),
@@ -431,56 +442,81 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
   Widget _buildBottomButtons(BuildContext context) {
     return Row(
       children: [
-        if (widget.showSkipButton ?? false) ...[
-          InkWell(
-            onTap: widget.onSkipButtonTap,
-            child: widget.skipButton ??
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    widget.skipButtonText ?? "Skip",
-                    style: widget.skipButtonTextStyle ??
-                        Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
-                  ),
-                ),
+        if (widget.showPreviousButton ?? false) ...[
+          Expanded(
+            child: Row(
+              children: [
+                InkWell(
+                    onTap: widget.onPreviousButtonTap,
+                    child: widget.previousButton ??
+                        Icon(
+                          Icons.chevron_left_rounded,
+                          color: Colors.white,
+                        )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   child: Text(
+                    //     widget.previousButtonText ?? "Prev",
+                    //     style: widget.previousButtonTextStyle ??
+                    //         Theme.of(context).textTheme.subtitle2!.merge(
+                    //               TextStyle(
+                    //                 color: widget.textColor,
+                    //               ),
+                    //             ),
+                    //   ),
+                    // ),
+                    ),
+              ],
+            ),
           ),
           // const Spacer(),
         ],
-        if (widget.showPreviousButton ?? false) ...[
-          InkWell(
-            onTap: widget.onPreviousButtonTap,
-            child: widget.previousButton ??
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    widget.previousButtonText ?? "Prev",
-                    style: widget.previousButtonTextStyle ??
-                        Theme.of(context).textTheme.subtitle2!.merge(
-                              TextStyle(
-                                color: widget.textColor,
-                              ),
-                            ),
+        if (widget.showSkipButton ?? false) ...[
+          Expanded(
+            child: InkWell(
+              onTap: widget.onSkipButtonTap,
+              child: widget.skipButton ??
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      widget.skipButtonText ?? "Skip",
+                      textAlign: TextAlign.center,
+                      style: widget.skipButtonTextStyle ??
+                          Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
+                    ),
                   ),
-                ),
+            ),
           ),
           // const Spacer(),
         ],
         if (widget.showNextButton ?? false)
-          InkWell(
-            onTap: widget.onNextButtonTap,
-            child: widget.nextButton ??
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    widget.nextButtonText ?? "Next",
-                    style: widget.nextButtonTextStyle ??
-                        Theme.of(context).textTheme.subtitle2!.merge(
-                              TextStyle(
-                                color: widget.textColor,
-                              ),
-                            ),
-                  ),
-                ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                    onTap: widget.onNextButtonTap,
+                    child: widget.nextButton ??
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          color: Colors.white,
+                        )
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   child: Text(
+                    //     widget.nextButtonText ?? "Next",
+                    //     textAlign: TextAlign.right,
+                    //     style: widget.nextButtonTextStyle ??
+                    //         Theme.of(context).textTheme.subtitle2!.merge(
+                    //               TextStyle(
+                    //                 color: widget.textColor,
+                    //               ),
+                    //             ),
+                    //   ),
+                    // ),
+                    ),
+              ],
+            ),
           ),
       ],
     );
