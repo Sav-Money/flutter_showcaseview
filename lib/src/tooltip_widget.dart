@@ -82,8 +82,7 @@ class ToolTipWidget extends StatefulWidget {
   _ToolTipWidgetState createState() => _ToolTipWidgetState();
 }
 
-class _ToolTipWidgetState extends State<ToolTipWidget>
-    with SingleTickerProviderStateMixin {
+class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProviderStateMixin {
   Offset? position;
 
   bool isArrowUp = false;
@@ -94,12 +93,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
   bool isCloseToTopOrBottom(Offset position) {
     var height = 120.0;
     height = widget.contentHeight ?? height;
-    final bottomPosition =
-        position.dy + ((widget.position?.getHeight() ?? 0) / 2);
+    final bottomPosition = position.dy + ((widget.position?.getHeight() ?? 0) / 2);
     final topPosition = position.dy - ((widget.position?.getHeight() ?? 0) / 2);
-    return ((widget.screenSize?.height ?? MediaQuery.of(context).size.height) -
-                bottomPosition) <=
-            height &&
+    return ((widget.screenSize?.height ?? MediaQuery.of(context).size.height) - bottomPosition) <= height &&
         topPosition >= height;
   }
 
@@ -112,25 +108,16 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
   }
 
   double _getTooltipWidth() {
-    final titleStyle = widget.titleTextStyle ??
-        Theme.of(context)
-            .textTheme
-            .headline6!
-            .merge(TextStyle(color: widget.textColor));
-    final descriptionStyle = widget.descTextStyle ??
-        Theme.of(context)
-            .textTheme
-            .subtitle2!
-            .merge(TextStyle(color: widget.textColor));
+    final titleStyle =
+        widget.titleTextStyle ?? Theme.of(context).textTheme.headline6!.merge(TextStyle(color: widget.textColor));
+    final descriptionStyle =
+        widget.descTextStyle ?? Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor));
     final titleLength = widget.title == null
         ? 0
-        : _textSize(widget.title ?? '', titleStyle).width +
-            widget.contentPadding!.right +
-            widget.contentPadding!.left;
-    final descriptionLength =
-        _textSize(widget.description ?? '', descriptionStyle).width +
-            widget.contentPadding!.right +
-            widget.contentPadding!.left;
+        : _textSize(widget.title ?? '', titleStyle).width + widget.contentPadding!.right + widget.contentPadding!.left;
+    final descriptionLength = _textSize(widget.description ?? '', descriptionStyle).width +
+        widget.contentPadding!.right +
+        widget.contentPadding!.left;
     var maxTextWidth = max(titleLength, descriptionLength);
     if (maxTextWidth > widget.screenSize!.width - 20) {
       return widget.screenSize!.width - 20;
@@ -151,8 +138,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
 
   double? _getLeft() {
     if (_isLeft()) {
-      var leftPadding =
-          widget.position!.getCenter() - (_getTooltipWidth() * 0.1);
+      var leftPadding = widget.position!.getCenter() - (_getTooltipWidth() * 0.1);
       if (leftPadding + _getTooltipWidth() > widget.screenSize!.width) {
         leftPadding = (widget.screenSize!.width - 20) - _getTooltipWidth();
       }
@@ -169,8 +155,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
 
   double? _getRight() {
     if (_isRight()) {
-      var rightPadding =
-          widget.position!.getCenter() + (_getTooltipWidth() / 2);
+      var rightPadding = widget.position!.getCenter() + (_getTooltipWidth() / 2);
       if (rightPadding + _getTooltipWidth() > widget.screenSize!.width) {
         rightPadding = 14;
       }
@@ -237,8 +222,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
         ? widget.position!.getBottom() + (contentOffsetMultiplier * 3)
         : widget.position!.getTop() + (contentOffsetMultiplier * 3);
 
-    final num contentFractionalOffset =
-        contentOffsetMultiplier.clamp(-1.0, 0.0);
+    final num contentFractionalOffset = contentOffsetMultiplier.clamp(-1.0, 0.0);
 
     var paddingTop = isArrowUp ? 22.0 : 0.0;
     var paddingBottom = isArrowUp ? 0.0 : 27.0;
@@ -283,12 +267,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                       Positioned(
                         left: _getLeft() == null
                             ? null
-                            : (widget.position!.getCenter() -
-                                (arrowWidth / 2) -
-                                (_getLeft() ?? 0)),
+                            : (widget.position!.getCenter() - (arrowWidth / 2) - (_getLeft() ?? 0)),
                         right: _getLeft() == null
-                            ? (MediaQuery.of(context).size.width -
-                                    widget.position!.getCenter()) -
+                            ? (MediaQuery.of(context).size.width - widget.position!.getCenter()) -
                                 (_getRight() ?? 0) -
                                 (arrowWidth / 2)
                             : null,
@@ -322,9 +303,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Column(
-                                  crossAxisAlignment: widget.title != null
-                                      ? CrossAxisAlignment.start
-                                      : CrossAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      widget.title != null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
                                   children: <Widget>[
                                     if (widget.title != null)
                                       Text(
@@ -333,8 +313,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                                             Theme.of(context)
                                                 .textTheme
                                                 .headline6!
-                                                .merge(TextStyle(
-                                                    color: widget.textColor)),
+                                                .merge(TextStyle(color: widget.textColor)),
                                       ),
                                     if (widget.description != null)
                                       Text(
@@ -343,11 +322,9 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                                             Theme.of(context)
                                                 .textTheme
                                                 .subtitle2!
-                                                .merge(TextStyle(
-                                                    color: widget.textColor)),
+                                                .merge(TextStyle(color: widget.textColor)),
                                       ),
-                                    if ((widget.showNextButton ?? false) ||
-                                        (widget.showSkipButton ?? false)) ...[
+                                    if ((widget.showNextButton ?? false) || (widget.showSkipButton ?? false)) ...[
                                       const SizedBox(height: 8.0),
                                       _buildBottomButtons(context),
                                     ]
@@ -377,9 +354,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
               child: SlideTransition(
                 position: Tween<Offset>(
                   begin: Offset(0.0, contentFractionalOffset / 10),
-                  end: !widget.showArrow && !isArrowUp
-                      ? Offset(0.0, 0.0)
-                      : Offset(0.0, 0.100),
+                  end: !widget.showArrow && !isArrowUp ? Offset(0.0, 0.0) : Offset(0.0, 0.100),
                 ).animate(_curvedAnimation),
                 child: Material(
                   color: Colors.transparent,
@@ -395,8 +370,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
                             onSizeChange: (size) {
                               setState(() {
                                 var tempPos = position;
-                                tempPos = Offset(
-                                    position!.dx, position!.dy + size!.height);
+                                tempPos = Offset(position!.dx, position!.dy + size!.height);
                                 position = tempPos;
                               });
                             },
@@ -435,10 +409,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
               child: Text(
                 widget.skipButtonText ?? "Skip",
                 style: widget.descTextStyle ??
-                    Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .merge(TextStyle(color: widget.textColor)),
+                    Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
               ),
             ),
           ),
@@ -451,10 +422,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
               child: Text(
                 widget.nextButtonText ?? "Next",
                 style: widget.descTextStyle ??
-                    Theme.of(context)
-                        .textTheme
-                        .subtitle2!
-                        .merge(TextStyle(color: widget.textColor)),
+                    Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
               ),
             ),
           ),
