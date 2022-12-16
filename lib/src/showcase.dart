@@ -82,6 +82,7 @@ class Showcase extends StatefulWidget {
 
   final EdgeInsets? titlePadding;
   final EdgeInsets? descriptionPadding;
+  final TextAlign? descTextAlign;
 
   /// Defines blur value.
   /// This will blur the background while displaying showcase.
@@ -132,6 +133,7 @@ class Showcase extends StatefulWidget {
     this.titleSpace = 10,
     this.descriptionPadding,
     this.titlePadding,
+    this.descTextAlign,
   })  : height = null,
         width = null,
         container = null,
@@ -183,6 +185,7 @@ class Showcase extends StatefulWidget {
     this.titleSpace = 10,
     this.descriptionPadding,
     this.titlePadding,
+    this.descTextAlign,
   })  : showArrow = false,
         onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
@@ -389,6 +392,7 @@ class _ShowcaseState extends State<Showcase> {
                 titleSpace: widget.titleSpace,
                 titlePadding: widget.titlePadding,
                 descriptionPadding: widget.descriptionPadding,
+                descTextAlign: widget.descTextAlign,
               ),
             ],
           )

@@ -71,6 +71,8 @@ class ToolTipWidget extends StatefulWidget {
   final CrossAxisAlignment? titleAlignment;
   final double? titleSpace;
 
+  final TextAlign? descTextAlign;
+
   ToolTipWidget({
     this.showNextButton,
     this.showSkipButton,
@@ -108,6 +110,7 @@ class ToolTipWidget extends StatefulWidget {
     this.titleSpace = 10,
     this.descriptionPadding,
     this.titlePadding,
+    this.descTextAlign = TextAlign.left,
   });
 
   @override
@@ -358,6 +361,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                         padding: widget.descriptionPadding ?? EdgeInsets.zero,
                                         child: Text(
                                           widget.description!,
+                                          textAlign: widget.descTextAlign ?? TextAlign.left,
                                           style: widget.descTextStyle ??
                                               Theme.of(context)
                                                   .textTheme
@@ -441,91 +445,67 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
 
   Widget _buildBottomButtons(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (widget.showPreviousButton ?? false) ...[
-          Expanded(
-            child: Row(
-              children: [
-                InkWell(
-                    onTap: widget.onPreviousButtonTap,
-                    child: widget.previousButton ??
-                        Icon(
-                          Icons.chevron_left_rounded,
-                          color: Colors.white,
-                        )
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Text(
-                    //     widget.previousButtonText ?? "Prev",
-                    //     style: widget.previousButtonTextStyle ??
-                    //         Theme.of(context).textTheme.subtitle2!.merge(
-                    //               TextStyle(
-                    //                 color: widget.textColor,
-                    //               ),
-                    //             ),
-                    //   ),
-                    // ),
-                    ),
-              ],
-            ),
-          ),
+          InkWell(
+              onTap: widget.onPreviousButtonTap,
+              child: widget.previousButton ??
+                  Icon(
+                    Icons.chevron_left_rounded,
+                    color: Colors.white,
+                  )
+              // Padding(
+              //   padding: const EdgeInsets.all(4.0),
+              //   child: Text(
+              //     widget.previousButtonText ?? "Prev",
+              //     style: widget.previousButtonTextStyle ??
+              //         Theme.of(context).textTheme.subtitle2!.merge(
+              //               TextStyle(
+              //                 color: widget.textColor,
+              //               ),
+              //             ),
+              //   ),
+              // ),
+              ),
+          const SizedBox(width: 20),
           // const Spacer(),
         ],
         if (widget.showSkipButton ?? false) ...[
-          Expanded(
-            child: Row(
-              mainAxisAlignment: ((widget.showPreviousButton ?? false) && (widget.showNextButton ?? false))
-                  ? MainAxisAlignment.center
-                  : (widget.showNextButton ?? false)
-                      ? MainAxisAlignment.end
-                      : MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: widget.onSkipButtonTap,
-                  child: widget.skipButton ??
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          widget.skipButtonText ?? "Skip",
-                          style: widget.skipButtonTextStyle ??
-                              Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
-                        ),
-                      ),
+          InkWell(
+            onTap: widget.onSkipButtonTap,
+            child: widget.skipButton ??
+                Text(
+                  widget.skipButtonText ?? "Skip",
+                  style: widget.skipButtonTextStyle ??
+                      Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
                 ),
-              ],
-            ),
           ),
+          const SizedBox(width: 20),
           // const Spacer(),
         ],
         if (widget.showNextButton ?? false)
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                    onTap: widget.onNextButtonTap,
-                    child: widget.nextButton ??
-                        Icon(
-                          Icons.chevron_right_rounded,
-                          color: Colors.white,
-                        )
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Text(
-                    //     widget.nextButtonText ?? "Next",
-                    //     textAlign: TextAlign.right,
-                    //     style: widget.nextButtonTextStyle ??
-                    //         Theme.of(context).textTheme.subtitle2!.merge(
-                    //               TextStyle(
-                    //                 color: widget.textColor,
-                    //               ),
-                    //             ),
-                    //   ),
-                    // ),
-                    ),
-              ],
-            ),
-          ),
+          InkWell(
+              onTap: widget.onNextButtonTap,
+              child: widget.nextButton ??
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: Colors.white,
+                  )
+              // Padding(
+              //   padding: const EdgeInsets.all(4.0),
+              //   child: Text(
+              //     widget.nextButtonText ?? "Next",
+              //     textAlign: TextAlign.right,
+              //     style: widget.nextButtonTextStyle ??
+              //         Theme.of(context).textTheme.subtitle2!.merge(
+              //               TextStyle(
+              //                 color: widget.textColor,
+              //               ),
+              //             ),
+              //   ),
+              // ),
+              ),
       ],
     );
   }
