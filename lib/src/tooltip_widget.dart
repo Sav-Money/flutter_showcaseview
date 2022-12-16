@@ -473,18 +473,26 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
         ],
         if (widget.showSkipButton ?? false) ...[
           Expanded(
-            child: InkWell(
-              onTap: widget.onSkipButtonTap,
-              child: widget.skipButton ??
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      widget.skipButtonText ?? "Skip",
-                      textAlign: TextAlign.center,
-                      style: widget.skipButtonTextStyle ??
-                          Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
-                    ),
-                  ),
+            child: Row(
+              mainAxisAlignment: ((widget.showPreviousButton ?? false) && (widget.showNextButton ?? false))
+                  ? MainAxisAlignment.center
+                  : (widget.showNextButton ?? false)
+                      ? MainAxisAlignment.end
+                      : MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: widget.onSkipButtonTap,
+                  child: widget.skipButton ??
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          widget.skipButtonText ?? "Skip",
+                          style: widget.skipButtonTextStyle ??
+                              Theme.of(context).textTheme.subtitle2!.merge(TextStyle(color: widget.textColor)),
+                        ),
+                      ),
+                ),
+              ],
             ),
           ),
           // const Spacer(),

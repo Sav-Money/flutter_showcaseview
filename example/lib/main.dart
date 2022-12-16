@@ -281,7 +281,6 @@ class _MailPageState extends State<MailPage> {
       ),
       floatingActionButton: Showcase(
         key: _five,
-        showPreviousButton: true,
         title: 'Compose Mail',
         description: 'Click here to compose mail',
         shapeBorder: const CircleBorder(),
@@ -322,7 +321,6 @@ class _MailPageState extends State<MailPage> {
           nextButtonText: 'Next >',
           skipButtonText: 'Skip',
           key: key,
-          showPreviousButton: true,
           description: 'Tap to check mail',
           disposeOnTap: true,
           onTargetClick: () {
