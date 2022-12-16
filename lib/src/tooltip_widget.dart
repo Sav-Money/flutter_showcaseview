@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 /*
  * Copyright (c) 2021 Simform Solutions
  *
@@ -63,7 +65,8 @@ class ToolTipWidget extends StatefulWidget {
   final TextStyle? nextButtonTextStyle;
   final TextStyle? previousButtonTextStyle;
 
-  final Widget? actions;
+  final CrossAxisAlignment? titleAlignment;
+  final double? titleSpace;
 
   ToolTipWidget({
     this.showNextButton,
@@ -92,13 +95,14 @@ class ToolTipWidget extends StatefulWidget {
     required this.animationDuration,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 8),
     required this.disableAnimation,
-    this.actions,
     this.nextButton,
     this.previousButton,
     this.skipButton,
     this.previousButtonTextStyle,
     this.nextButtonTextStyle,
     this.skipButtonTextStyle,
+    this.titleAlignment = CrossAxisAlignment.start,
+    this.titleSpace = 10,
   });
 
   @override
@@ -326,10 +330,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Column(
-                                  crossAxisAlignment:
-                                      widget.title != null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                                  crossAxisAlignment: widget.title != null
+                                      ? (widget.titleAlignment ?? CrossAxisAlignment.start)
+                                      : CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    if (widget.title != null)
+                                    if (widget.title != null) ...[
                                       Text(
                                         widget.title!,
                                         style: widget.titleTextStyle ??
@@ -338,6 +343,8 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                                 .headline6!
                                                 .merge(TextStyle(color: widget.textColor)),
                                       ),
+                                      SizedBox(height: widget.titleSpace ?? 0),
+                                    ],
                                     if (widget.description != null)
                                       Text(
                                         widget.description!,

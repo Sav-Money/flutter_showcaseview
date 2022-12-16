@@ -77,6 +77,9 @@ class Showcase extends StatefulWidget {
   final Widget? previousButton;
   final Widget? nextButton;
 
+  final CrossAxisAlignment? titleAlignment;
+  final double? titleSpace;
+
   /// Defines blur value.
   /// This will blur the background while displaying showcase.
   ///
@@ -122,6 +125,8 @@ class Showcase extends StatefulWidget {
     this.nextButton,
     this.previousButton,
     this.skipButton,
+    this.titleAlignment = CrossAxisAlignment.start,
+    this.titleSpace = 10,
   })  : height = null,
         width = null,
         container = null,
@@ -169,6 +174,8 @@ class Showcase extends StatefulWidget {
     this.nextButton,
     this.previousButton,
     this.skipButton,
+    this.titleAlignment = CrossAxisAlignment.start,
+    this.titleSpace = 10,
   })  : showArrow = false,
         onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
@@ -371,6 +378,8 @@ class _ShowcaseState extends State<Showcase> {
                 nextButtonTextStyle: widget.nextButtonTextStyle,
                 previousButtonTextStyle: widget.previousButtonTextStyle,
                 skipButtonTextStyle: widget.skipButtonTextStyle,
+                titleAlignment: widget.titleAlignment,
+                titleSpace: widget.titleSpace,
               ),
             ],
           )
