@@ -63,6 +63,7 @@ class Showcase extends StatefulWidget {
   final String? skipButtonText;
   final bool showNextButton;
   final bool showSkipButton;
+  final bool showCloseButton;
   final FutureOr<void> Function()? onNextItemCalled;
 
   final bool? showPreviousButton;
@@ -117,6 +118,7 @@ class Showcase extends StatefulWidget {
     this.skipButtonText = 'Skip',
     this.showNextButton = false,
     this.showSkipButton = false,
+    this.showCloseButton = true,
     this.onNextItemCalled,
     this.blurValue,
     this.radius,
@@ -170,6 +172,7 @@ class Showcase extends StatefulWidget {
     this.skipButtonText = 'Skip',
     this.showNextButton = false,
     this.showSkipButton = false,
+    this.showCloseButton = true,
     this.onNextItemCalled,
     this.blurValue,
     this.previousButtonText,
@@ -393,6 +396,8 @@ class _ShowcaseState extends State<Showcase> {
                 titlePadding: widget.titlePadding,
                 descriptionPadding: widget.descriptionPadding,
                 descTextAlign: widget.descTextAlign,
+                onCloseButtonTap: () => ShowCaseWidget.of(context)!.dismiss(),
+                showCloseButton: widget.showCloseButton,
               ),
             ],
           )

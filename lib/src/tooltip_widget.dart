@@ -25,6 +25,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:showcaseview/src/showcase_widget.dart';
 
 import 'get_position.dart';
 import 'measure_size.dart';
@@ -56,6 +57,7 @@ class ToolTipWidget extends StatefulWidget {
   final String? previousButtonText;
   final VoidCallback? onNextButtonTap;
   final VoidCallback? onSkipButtonTap;
+  final VoidCallback? onCloseButtonTap;
   final VoidCallback? onPreviousButtonTap;
   final Duration animationDuration;
   final bool disableAnimation;
@@ -73,9 +75,12 @@ class ToolTipWidget extends StatefulWidget {
 
   final TextAlign? descTextAlign;
 
+  final bool? showCloseButton;
+
   ToolTipWidget({
     this.showNextButton,
     this.showSkipButton,
+    this.showCloseButton,
     this.nextButtonText,
     this.skipButtonText,
     this.onNextButtonTap,
@@ -111,6 +116,7 @@ class ToolTipWidget extends StatefulWidget {
     this.descriptionPadding,
     this.titlePadding,
     this.descTextAlign = TextAlign.left,
+    this.onCloseButtonTap,
   });
 
   @override
@@ -178,7 +184,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
         leftPadding = (widget.screenSize!.width - 20) - _getTooltipWidth();
       }
       if (leftPadding < 20) {
-        leftPadding = 14;
+        leftPadding = 25;
       }
       return leftPadding;
     } else if (!(_isRight())) {
@@ -198,7 +204,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
     } else if (!(_isLeft())) {
       return widget.position!.getCenter() - (_getTooltipWidth() * 0.5);
     } else {
-      return null;
+      return 25;
     }
   }
 
@@ -342,6 +348,27 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                       ? (widget.titleAlignment ?? CrossAxisAlignment.start)
                                       : CrossAxisAlignment.center,
                                   children: <Widget>[
+                                    if (widget.showCloseButton ?? false) ...[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () {
+                                              widget.onCloseButtonTap?.call();
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
+                                              child: Icon(
+                                                Icons.close,
+                                                size: 18,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                     if (widget.title != null) ...[
                                       Padding(
                                         padding: widget.titlePadding ?? EdgeInsets.zero,
