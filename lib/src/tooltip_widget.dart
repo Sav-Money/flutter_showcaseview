@@ -351,42 +351,44 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                       ? (widget.titleAlignment ?? CrossAxisAlignment.start)
                                       : CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    if (widget.showCloseButton ?? false) ...[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          InkWell(
-                                            splashColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () {
-                                              widget.onCloseButtonTap?.call();
-                                            },
-                                            child: widget.closeButton ??
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    size: 18,
-                                                  ),
-                                                ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: _title(),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                    if (widget.title != null) ...[
-                                      Padding(
-                                        padding: widget.titlePadding ?? EdgeInsets.zero,
-                                        child: Text(
-                                          widget.title!,
-                                          style: widget.titleTextStyle ??
-                                              Theme.of(context)
-                                                  .textTheme
-                                                  .headline6!
-                                                  .merge(TextStyle(color: widget.textColor)),
                                         ),
-                                      ),
-                                      SizedBox(height: widget.titleSpace ?? 0),
-                                    ],
+                                        _closeButton(),
+                                      ],
+                                    ),
+                                    // if (widget.showCloseButton ?? false) ...[
+                                    //   _closeButton(),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.end,
+                                    //   children: [
+                                    //     InkWell(
+                                    //       splashColor: Colors.transparent,
+                                    //       highlightColor: Colors.transparent,
+                                    //       onTap: () {
+                                    //         widget.onCloseButtonTap?.call();
+                                    //       },
+                                    //       child: widget.closeButton ??
+                                    //           Padding(
+                                    //             padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
+                                    //             child: Icon(
+                                    //               Icons.close,
+                                    //               size: 18,
+                                    //             ),
+                                    //           ),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    // ],
+                                    // if (widget.title != null) ...[
+                                    // ..._title(),
+                                    // ],
                                     if (widget.description != null)
                                       Padding(
                                         padding: widget.descriptionPadding ?? EdgeInsets.zero,
@@ -460,6 +462,52 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
           ),
         ],
       );
+    }
+  }
+
+  Widget _closeButton() {
+    return (widget.showCloseButton ?? false)
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  widget.onCloseButtonTap?.call();
+                },
+                child: widget.closeButton ??
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
+                      child: Icon(
+                        Icons.close,
+                        size: 18,
+                      ),
+                    ),
+              ),
+            ],
+          )
+        : const SizedBox();
+  }
+
+  List<Widget> _title() {
+    if (widget.title != null) {
+      return [
+            Expanded(
+              child: Padding(
+                padding: widget.titlePadding ?? EdgeInsets.zero,
+                child: Text(
+                  widget.title!,
+                  textAlign: TextAlign.center,
+                  style: widget.titleTextStyle ??
+                      Theme.of(context).textTheme.headline6!.merge(TextStyle(color: widget.textColor)),
+                ),
+              ),
+            ),
+            SizedBox(height: widget.titleSpace ?? 0),
+          ];
+    } else {
+      return [];
     }
   }
 
