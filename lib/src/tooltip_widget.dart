@@ -77,6 +77,8 @@ class ToolTipWidget extends StatefulWidget {
 
   final bool? showCloseButton;
 
+  final Widget? closeButton;
+
   ToolTipWidget({
     this.showNextButton,
     this.showSkipButton,
@@ -117,6 +119,7 @@ class ToolTipWidget extends StatefulWidget {
     this.titlePadding,
     this.descTextAlign = TextAlign.left,
     this.onCloseButtonTap,
+    this.closeButton,
   });
 
   @override
@@ -198,7 +201,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
     if (_isRight()) {
       var rightPadding = widget.position!.getCenter() + (_getTooltipWidth() / 2);
       if (rightPadding + _getTooltipWidth() > widget.screenSize!.width) {
-        rightPadding = 14;
+        rightPadding = 25;
       }
       return rightPadding;
     } else if (!(_isLeft())) {
@@ -358,13 +361,14 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                                             onTap: () {
                                               widget.onCloseButtonTap?.call();
                                             },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
-                                              child: Icon(
-                                                Icons.close,
-                                                size: 18,
-                                              ),
-                                            ),
+                                            child: widget.closeButton ??
+                                                Padding(
+                                                  padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    size: 18,
+                                                  ),
+                                                ),
                                           ),
                                         ],
                                       ),

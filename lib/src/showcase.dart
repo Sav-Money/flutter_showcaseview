@@ -77,6 +77,7 @@ class Showcase extends StatefulWidget {
   final Widget? skipButton;
   final Widget? previousButton;
   final Widget? nextButton;
+  final Widget? closeButton;
 
   final CrossAxisAlignment? titleAlignment;
   final double? titleSpace;
@@ -136,6 +137,7 @@ class Showcase extends StatefulWidget {
     this.descriptionPadding,
     this.titlePadding,
     this.descTextAlign,
+    this.closeButton,
   })  : height = null,
         width = null,
         container = null,
@@ -189,6 +191,7 @@ class Showcase extends StatefulWidget {
     this.descriptionPadding,
     this.titlePadding,
     this.descTextAlign,
+    this.closeButton,
   })  : showArrow = false,
         onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
@@ -398,6 +401,7 @@ class _ShowcaseState extends State<Showcase> {
                 descTextAlign: widget.descTextAlign,
                 onCloseButtonTap: () => ShowCaseWidget.of(context)!.dismiss(),
                 showCloseButton: widget.showCloseButton,
+                closeButton: widget.closeButton,
               ),
             ],
           )
