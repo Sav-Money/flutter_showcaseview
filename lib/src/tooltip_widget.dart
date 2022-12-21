@@ -187,7 +187,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
         leftPadding = (widget.screenSize!.width - 20) - _getTooltipWidth();
       }
       if (leftPadding < 20) {
-        leftPadding = 25;
+        leftPadding = 14;
       }
       return leftPadding;
     } else if (!(_isRight())) {
@@ -201,13 +201,13 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
     if (_isRight()) {
       var rightPadding = widget.position!.getCenter() + (_getTooltipWidth() / 2);
       if (rightPadding + _getTooltipWidth() > widget.screenSize!.width) {
-        rightPadding = 25;
+        rightPadding = 14;
       }
       return rightPadding;
     } else if (!(_isLeft())) {
       return widget.position!.getCenter() - (_getTooltipWidth() * 0.5);
     } else {
-      return 25;
+      return null;
     }
   }
 
