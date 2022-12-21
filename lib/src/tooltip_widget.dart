@@ -478,7 +478,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with SingleTickerProvider
                 },
                 child: widget.closeButton ??
                     Padding(
-                      padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5),
+                      padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5, top: 5),
                       child: Icon(
                         Icons.close,
                         size: 18,
