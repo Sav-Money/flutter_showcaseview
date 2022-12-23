@@ -65,6 +65,7 @@ class Showcase extends StatefulWidget {
   final bool showSkipButton;
   final bool showCloseButton;
   final FutureOr<void> Function()? onNextItemCalled;
+  final FutureOr<void> Function()? onSkipItemCalled;
 
   final bool? showPreviousButton;
   final String? previousButtonText;
@@ -138,6 +139,7 @@ class Showcase extends StatefulWidget {
     this.titlePadding,
     this.descTextAlign,
     this.closeButton,
+    this.onSkipItemCalled,
   })  : height = null,
         width = null,
         container = null,
@@ -192,6 +194,7 @@ class Showcase extends StatefulWidget {
     this.titlePadding,
     this.descTextAlign,
     this.closeButton,
+    this.onSkipItemCalled,
   })  : showArrow = false,
         onToolTipClick = null,
         assert(overlayOpacity >= 0.0 && overlayOpacity <= 1.0, "overlay opacity must be between 0 and 1.");
@@ -235,7 +238,7 @@ class _ShowcaseState extends State<Showcase> {
   }
 
   void _scrollIntoView() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       setState(() {
         _isScrollRunning = true;
       });
@@ -268,7 +271,9 @@ class _ShowcaseState extends State<Showcase> {
     );
   }
 
-  void onClickPrevious() {
+  Future<void> onClickPrevious() async {
+    if (widget.onPreviousButtonTap != null) await widget.onPreviousButtonTap;
+
     final total = ShowCaseWidget.of(context)!.ids?.length;
     final currentId = ShowCaseWidget.of(context)!.activeWidgetId;
 
@@ -277,6 +282,12 @@ class _ShowcaseState extends State<Showcase> {
         ShowCaseWidget.of(context)!.previous();
       }
     }
+  }
+
+  void _onClickSkip() async {
+    if (widget.onSkipItemCalled != null) await widget.onSkipItemCalled!();
+
+    ShowCaseWidget.of(context)!.dismiss();
   }
 
   void nextIfAny() async {
@@ -385,7 +396,7 @@ class _ShowcaseState extends State<Showcase> {
                 skipButtonText: widget.skipButtonText,
                 onNextButtonTap: nextIfAny,
                 onPreviousButtonTap: onClickPrevious,
-                onSkipButtonTap: () => ShowCaseWidget.of(context)!.dismiss(),
+                onSkipButtonTap: _onClickSkip,
                 previousButton: widget.previousButton,
                 skipButton: widget.skipButton,
                 nextButton: widget.nextButton,
