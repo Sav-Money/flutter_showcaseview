@@ -20,7 +20,10 @@
  * SOFTWARE.
  */
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 import '../showcaseview.dart';
 
@@ -87,11 +90,21 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
     autoPlayLockEnable = widget.autoPlayLockEnable;
   }
 
-  void startShowCase(List<GlobalKey> widgetIds) {
+  void startShowCase(List<GlobalKey> widgetIds, {GlobalKey? initialKey}) {
     if (mounted) {
       setState(() {
         ids = widgetIds;
-        activeWidgetId = 0;
+        if(initialKey != null) {
+          final current = ids?.where((element) => element == initialKey).firstOrNull;
+          if(current != null) {
+            final index = ids!.indexOf(current);
+            activeWidgetId = index;
+          }
+          log('$current');
+        }else {
+          activeWidgetId = 0;
+        }
+        
         _onStart();
       });
     }
