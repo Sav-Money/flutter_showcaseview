@@ -66,10 +66,10 @@ class Showcase extends StatefulWidget {
   final bool showCloseButton;
   final FutureOr<void> Function()? onNextItemCalled;
   final FutureOr<void> Function()? onSkipItemCalled;
+  final FutureOr<void> Function()? onPreviousItemCalled;
 
   final bool? showPreviousButton;
   final String? previousButtonText;
-  final VoidCallback? onPreviousButtonTap;
 
   final TextStyle? skipButtonTextStyle;
   final TextStyle? nextButtonTextStyle;
@@ -125,7 +125,7 @@ class Showcase extends StatefulWidget {
     this.blurValue,
     this.radius,
     this.previousButtonText,
-    this.onPreviousButtonTap,
+    this.onPreviousItemCalled,
     this.showPreviousButton,
     this.skipButtonTextStyle,
     this.nextButtonTextStyle,
@@ -180,7 +180,7 @@ class Showcase extends StatefulWidget {
     this.onNextItemCalled,
     this.blurValue,
     this.previousButtonText,
-    this.onPreviousButtonTap,
+    this.onPreviousItemCalled,
     this.showPreviousButton,
     this.nextButtonTextStyle,
     this.previousButtonTextStyle,
@@ -272,7 +272,7 @@ class _ShowcaseState extends State<Showcase> {
   }
 
   Future<void> onClickPrevious() async {
-    if (widget.onPreviousButtonTap != null) await widget.onPreviousButtonTap;
+    if (widget.onPreviousItemCalled != null) await widget.onPreviousItemCalled!();
 
     final total = ShowCaseWidget.of(context)!.ids?.length;
     final currentId = ShowCaseWidget.of(context)!.activeWidgetId;
