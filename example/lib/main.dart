@@ -19,25 +19,31 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: ShowCaseWidget(
-          onStart: (index, key) {
-            log('onStart: $index, $key');
-          },
-          onComplete: (index, key) {
-            log('onComplete: $index, $key');
-            if (index == 4) {
-              SystemChrome.setSystemUIOverlayStyle(
-                SystemUiOverlayStyle.light.copyWith(
-                  statusBarIconBrightness: Brightness.dark,
-                  statusBarColor: Colors.white,
-                ),
-              );
-            }
-          },
-          onFinish: () => log('Finish'),
-          blurValue: 1,
-          builder: Builder(builder: (context) => const MailPage()),
-          autoPlayDelay: const Duration(seconds: 3),
+        body: Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => ShowCaseWidget(
+                onStart: (index, key) {
+                  log('onStart: $index, $key');
+                },
+                onComplete: (index, key) {
+                  log('onComplete: $index, $key');
+                  if (index == 4) {
+                    SystemChrome.setSystemUIOverlayStyle(
+                      SystemUiOverlayStyle.light.copyWith(
+                        statusBarIconBrightness: Brightness.dark,
+                        statusBarColor: Colors.white,
+                      ),
+                    );
+                  }
+                },
+                onFinish: () => log('Finish'),
+                blurValue: 1,
+                builder: Builder(builder: (context) => const MailPage()),
+                autoPlayDelay: const Duration(seconds: 3),
+              ),
+            ),
+          ],
         ),
       ),
     );

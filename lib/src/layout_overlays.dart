@@ -24,6 +24,8 @@ import 'package:flutter/material.dart';
 
 import 'showcase_widget.dart';
 
+typedef OverlayBuilderCallback = Widget Function(BuildContext, Rect anchorBounds, Offset anchor);
+
 /// Displays an overlay Widget anchored directly above the center of this
 /// [AnchoredOverlay].
 ///
@@ -41,10 +43,10 @@ import 'showcase_widget.dart';
 ///
 class AnchoredOverlay extends StatelessWidget {
   final bool showOverlay;
-  final Widget Function(BuildContext, Rect anchorBounds, Offset anchor)? overlayBuilder;
+  final OverlayBuilderCallback? overlayBuilder;
   final Widget? child;
 
-  AnchoredOverlay({
+  const AnchoredOverlay({
     Key? key,
     this.showOverlay = false,
     this.overlayBuilder,
@@ -65,7 +67,7 @@ class AnchoredOverlay extends StatelessWidget {
             final bottomRight = box.size.bottomRight(box.localToGlobal(const Offset(0.0, 0.0)));
             Rect anchorBounds;
             anchorBounds = (topLeft.dx.isNaN || topLeft.dy.isNaN || bottomRight.dx.isNaN || bottomRight.dy.isNaN)
-                ? Rect.fromLTRB(0.0, 0.0, 0.0, 0.0)
+                ? const Rect.fromLTRB(0.0, 0.0, 0.0, 0.0)
                 : Rect.fromLTRB(
                     topLeft.dx,
                     topLeft.dy,
@@ -96,10 +98,10 @@ class AnchoredOverlay extends StatelessWidget {
 /// a better approach is found then feel free to use it.
 class OverlayBuilder extends StatefulWidget {
   final bool showOverlay;
-  final Widget Function(BuildContext)? overlayBuilder;
+  final WidgetBuilder? overlayBuilder;
   final Widget? child;
 
-  OverlayBuilder({
+  const OverlayBuilder({
     Key? key,
     this.showOverlay = false,
     this.overlayBuilder,
@@ -107,8 +109,10 @@ class OverlayBuilder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OverlayBuilderState createState() => _OverlayBuilderState();
+  State<OverlayBuilder> createState() => _OverlayBuilderState();
 }
+
+T? ambiguate<T>(T? object) => object;
 
 class _OverlayBuilderState extends State<OverlayBuilder> {
   OverlayEntry? _overlayEntry;
@@ -118,20 +122,20 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
     super.initState();
 
     if (widget.showOverlay) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) => showOverlay());
+      ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) => showOverlay());
     }
   }
 
   @override
   void didUpdateWidget(OverlayBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    WidgetsBinding.instance!.addPostFrameCallback((_) => syncWidgetAndOverlay());
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
   @override
   void reassemble() {
     super.reassemble();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => syncWidgetAndOverlay());
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) => syncWidgetAndOverlay());
   }
 
   @override
@@ -159,11 +163,13 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
   }
 
   void addToOverlay(OverlayEntry overlayEntry) async {
+    final showCaseContext = ShowCaseWidget.of(context)?.context;
+    if (showCaseContext == null) return;
     if (mounted) {
-      if (ShowCaseWidget.of(context)?.context != null && Overlay.of(ShowCaseWidget.of(context)!.context) != null) {
-        Overlay.of(ShowCaseWidget.of(context)!.context)!.insert(overlayEntry);
+      if (Overlay.maybeOf(showCaseContext) != null) {
+        Overlay.of(showCaseContext)!.insert(overlayEntry);
       } else {
-        if (Overlay.of(context) != null) {
+        if (Overlay.maybeOf(context) != null) {
           Overlay.of(context)!.insert(overlayEntry);
         }
       }
@@ -186,7 +192,7 @@ class _OverlayBuilderState extends State<OverlayBuilder> {
   }
 
   void buildOverlay() async {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _overlayEntry?.markNeedsBuild());
+    ambiguate(WidgetsBinding.instance)?.addPostFrameCallback((_) => _overlayEntry?.markNeedsBuild());
   }
 
   @override
